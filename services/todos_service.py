@@ -5,11 +5,12 @@ from models import Todo
 from repositories.todos_repository import TodoRepository
 from exceptions.user_not_found_exception import UserNotFoundException
 
+
 class TodoService:
     def __init__(self):
         self.todo_repository = TodoRepository()
         self.user_not_found_exception = UserNotFoundException
-    
+
     async def find_user_by_id(user_id: int):
         url = "http://localhost:8001/users/{user_id}"
         async with httpx.AsyncClient() as client:
@@ -22,7 +23,7 @@ class TodoService:
         user = await TodoService.find_user_by_id(todo_data.user_id)
         if not user:
             raise UserNotFoundException(todo_data.user_id)
-        
+
         # Proceed with creating todo
         new_todo = Todo(
             title=todo_data.title,
@@ -30,13 +31,13 @@ class TodoService:
             user_id=todo_data.user_id
         )
         return await self.todo_repository.create(session, new_todo)
-    
+
     async def get_todo(self, todo_id: int, session: AsyncSession) -> Todo:
         return await self.todo_repository.get_by_id(session, todo_id)
-    
+
     async def get_todos(self, session: AsyncSession) -> list[Todo]:
         return await self.todo_repository.get_all(session)
-    
+
     async def update_todo(self, todo_id: int, todo_data: TodoUpdateModel, session: AsyncSession) -> Todo:
         # Validate user_id exists
         user = await TodoService.find_user_by_id(todo_data.user_id)
@@ -50,13 +51,12 @@ class TodoService:
 
         # Persist changes
         return await self.todo_repository.update(session, todo_id, todo_data.model_dump())
-    
+
     async def delete_todo(self, todo_id: int, session: AsyncSession) -> None:
         return await self.todo_repository.delete(session, todo_id)
-    
+
     async def get_user_todos(self, user_id: int, session: AsyncSession) -> list[Todo]:
         return await self.todo_repository.get_user_todos(session, user_id)
-    
+
     # async def get_user_todo_by_id(self, user_id: int, todo_id: int, session: AsyncSession) -> Todo: # New method
     #     return await self.todo_repository.get_user_todo_by_id(session, user_id, todo_id)
-    

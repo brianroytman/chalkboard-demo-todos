@@ -1,6 +1,7 @@
 import asyncio
 from database import Base, engine
 
+
 async def create_db():
     async with engine.begin() as conn:
         # Import your models here
@@ -10,7 +11,7 @@ async def create_db():
         print("Dropping all tables...")
         await conn.run_sync(Base.metadata.drop_all)
         print("Tables dropped.")
-        
+
         # Create all tables
         print("Creating all tables...")
         await conn.run_sync(Base.metadata.create_all)
