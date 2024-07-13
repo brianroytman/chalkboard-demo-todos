@@ -56,7 +56,4 @@ class TodoService:
         return await self.todo_repository.delete(session, todo_id)
 
     async def get_user_todos(self, user_id: int, session: AsyncSession) -> list[Todo]:
-        return await self.todo_repository.get_user_todos(session, user_id)
-
-    # async def get_user_todo_by_id(self, user_id: int, todo_id: int, session: AsyncSession) -> Todo: # New method
-    #     return await self.todo_repository.get_user_todo_by_id(session, user_id, todo_id)
+        return await self.todo_repository.get_user_todos_by_id(session, user_id)

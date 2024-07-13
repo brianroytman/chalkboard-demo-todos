@@ -53,7 +53,7 @@ class TodoRepository:
         await session.delete(todo)
         await session.commit()
 
-    async def get_user_todos(self, session: AsyncSession, user_id: int) -> list[Todo]:
+    async def get_user_todos_by_id(self, session: AsyncSession, user_id: int) -> list[Todo]:
         statement = select(Todo).filter(
             Todo.user_id == user_id).order_by(Todo.id)
         result = await session.execute(statement)

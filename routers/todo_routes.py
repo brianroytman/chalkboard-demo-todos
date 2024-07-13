@@ -69,3 +69,12 @@ async def delete_todo(todo_id: int, session: AsyncSession = Depends(get_session)
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
+
+@router.get("/users/{user_id}/todos", status_code=status.HTTP_200_OK, response_model=List[TodoModel])
+async def get_user_todos(user_id: int, session: AsyncSession = Depends(get_session)):
+    try:
+        todos = await todos_service.get_user_todos(user_id, session)
+        return todos
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
