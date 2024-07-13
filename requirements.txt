@@ -6,3 +6,4 @@ psycopg2
 pydantic-settings
 flake8
 autopep8
+httpx
