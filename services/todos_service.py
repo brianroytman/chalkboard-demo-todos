@@ -9,7 +9,6 @@ from exceptions.user_not_found_exception import UserNotFoundException
 class TodoService:
     def __init__(self):
         self.todo_repository = TodoRepository()
-        self.user_not_found_exception = UserNotFoundException
 
     async def find_user_by_id(user_id: int):
         url = "http://localhost:8001/users/{user_id}"
