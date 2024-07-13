@@ -7,6 +7,7 @@ from models import Todo
 from exceptions.user_not_found_exception import UserNotFoundException
 from schemas import TodoCreateModel
 
+
 class TestTodoService(unittest.IsolatedAsyncioTestCase):
 
     @patch('services.todos_service.TodoService.find_user_by_id')
@@ -167,6 +168,7 @@ class TestTodoService(unittest.IsolatedAsyncioTestCase):
 
         # Assertions
         self.assertEqual(result, True)
+
 
 if __name__ == '__main__':
     unittest.main()

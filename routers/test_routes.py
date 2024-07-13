@@ -9,6 +9,7 @@ from exceptions.user_not_found_exception import UserNotFoundException
 app = FastAPI()
 app.include_router(router)
 
+
 class TestTodoRoutes(unittest.TestCase):
 
     def setUp(self):
@@ -22,13 +23,15 @@ class TestTodoRoutes(unittest.TestCase):
             is_completed=False,
             user_id=1
         )
-        mock_create_todo.return_value = TodoModel(**mock_todo_create.dict(), id=1)
+        mock_create_todo.return_value = TodoModel(
+            **mock_todo_create.dict(), id=1)
 
         response = await self.client.post('/todos', json=mock_todo_create.dict())
-        
+
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(response.json(), mock_todo_create.dict())
-        mock_create_todo.assert_called_once_with(mock_todo_create, session=AsyncMock())
+        mock_create_todo.assert_called_once_with(
+            mock_todo_create, session=AsyncMock())
 
     @patch('routers.todo_routes.todos_service.create_todo', new_callable=AsyncMock)
     async def test_create_todo_exception(self, mock_create_todo):
@@ -41,7 +44,8 @@ class TestTodoRoutes(unittest.TestCase):
 
     @patch('routers.todo_routes.todos_service.get_todo', new_callable=AsyncMock)
     async def test_get_todo(self, mock_get_todo):
-        mock_todo = TodoModel(id=1, title='Test Todo', description='This is a test todo', is_completed=False, user_id=1)
+        mock_todo = TodoModel(
+            id=1, title='Test Todo', description='This is a test todo', is_completed=False, user_id=1)
         mock_get_todo.return_value = mock_todo
 
         response = await self.client.get('/todos/1')
@@ -62,8 +66,10 @@ class TestTodoRoutes(unittest.TestCase):
     @patch('routers.todo_routes.todos_service.get_todos', new_callable=AsyncMock)
     async def test_get_todos(self, mock_get_todos):
         mock_todos = [
-            TodoModel(id=1, title='Test Todo 1', description='This is test todo 1', is_completed=False, user_id=1),
-            TodoModel(id=2, title='Test Todo 2', description='This is test todo 2', is_completed=True, user_id=1)
+            TodoModel(id=1, title='Test Todo 1',
+                      description='This is test todo 1', is_completed=False, user_id=1),
+            TodoModel(id=2, title='Test Todo 2',
+                      description='This is test todo 2', is_completed=True, user_id=1)
         ]
         mock_get_todos.return_value = mock_todos
 
@@ -75,14 +81,18 @@ class TestTodoRoutes(unittest.TestCase):
 
     @patch('routers.todo_routes.todos_service.update_todo', new_callable=AsyncMock)
     async def test_update_todo(self, mock_update_todo):
-        updated_data = {'title': 'Updated Test Todo', 'description': 'Updated description', 'is_completed': True}
-        mock_update_todo.return_value = TodoModel(id=1, user_id=1, **updated_data)
+        updated_data = {'title': 'Updated Test Todo',
+                        'description': 'Updated description', 'is_completed': True}
+        mock_update_todo.return_value = TodoModel(
+            id=1, user_id=1, **updated_data)
 
         response = await self.client.put('/todos/1', json=updated_data)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.json(), {'id': 1, 'user_id': 1, **updated_data})
-        mock_update_todo.assert_called_once_with(1, updated_data, session=AsyncMock())
+        self.assertEqual(response.json(), {
+                         'id': 1, 'user_id': 1, **updated_data})
+        mock_update_todo.assert_called_once_with(
+            1, updated_data, session=AsyncMock())
 
     @patch('routers.todo_routes.todos_service.update_todo', new_callable=AsyncMock)
     async def test_update_todo_not_found(self, mock_update_todo):
@@ -116,8 +126,10 @@ class TestTodoRoutes(unittest.TestCase):
     async def test_get_user_todos(self, mock_get_user_todos):
         mock_user_id = 1
         mock_todos = [
-            TodoModel(id=1, title='Test Todo 1', description='This is test todo 1', is_completed=False, user_id=mock_user_id),
-            TodoModel(id=2, title='Test Todo 2', description='This is test todo 2', is_completed=True, user_id=mock_user_id)
+            TodoModel(id=1, title='Test Todo 1', description='This is test todo 1',
+                      is_completed=False, user_id=mock_user_id),
+            TodoModel(id=2, title='Test Todo 2', description='This is test todo 2',
+                      is_completed=True, user_id=mock_user_id)
         ]
         mock_get_user_todos.return_value = mock_todos
 
@@ -125,7 +137,9 @@ class TestTodoRoutes(unittest.TestCase):
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.json(), [todo.dict() for todo in mock_todos])
-        mock_get_user_todos.assert_called_once_with(mock_user_id, session=AsyncMock())
+        mock_get_user_todos.assert_called_once_with(
+            mock_user_id, session=AsyncMock())
+
 
 if __name__ == '__main__':
     unittest.main()
