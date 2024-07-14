@@ -1,4 +1,5 @@
 from fastapi import APIRouter, HTTPException, status, Depends
+from fastapi.responses import Response
 from sqlalchemy.ext.asyncio import AsyncSession
 from dependencies import get_session
 from schemas import TodoModel, TodoCreateModel
@@ -66,6 +67,7 @@ async def update_todo(todo_id: int, todo_data: TodoCreateModel, session: AsyncSe
 async def delete_todo(todo_id: int, session: AsyncSession = Depends(get_session)):
     try:
         await todos_service.delete_todo(todo_id, session)
+        return Response(status_code=status.HTTP_204_NO_CONTENT)
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
