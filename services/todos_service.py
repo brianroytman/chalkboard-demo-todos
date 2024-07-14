@@ -1,3 +1,4 @@
+import os
 import httpx
 from sqlalchemy.ext.asyncio import AsyncSession
 from schemas import TodoCreateModel, TodoUpdateModel
@@ -11,7 +12,8 @@ class TodoService:
         self.todo_repository = TodoRepository()
 
     async def find_user_by_id(user_id: int):
-        url = "http://localhost:8001/users/{user_id}"
+        base_url = os.getenv('USERS_SERVICE_URL', 'http://localhost:8001')
+        url = f"{base_url}/users/{user_id}"
         async with httpx.AsyncClient() as client:
             response = await client.get(url.format(user_id=user_id))
             response.raise_for_status()  # Raise exception for non-2xx responses
