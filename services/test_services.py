@@ -43,7 +43,7 @@ class TestTodoService(unittest.IsolatedAsyncioTestCase):
 
         # Mock TodoRepository's create method with AsyncMock
         mock_repository = AsyncMock()
-        mock_repository.create.return_value = Todo(
+        mock_repository.add.return_value = Todo(
             id=1,
             title='Test Todo',
             description='Test Description',
