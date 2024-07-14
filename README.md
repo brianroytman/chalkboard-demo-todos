@@ -12,7 +12,7 @@ The following technologies were used in this project:
 - Docker
 - OpenAPI/Swagger
 
-## Project Considerations
+## Considerations
 
 ### Embraced Async Operations
 - **Improved Performance:** Non-blocking operations allow handling more concurrent requests efficiently.
