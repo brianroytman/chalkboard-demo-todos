@@ -2,6 +2,18 @@
 
 This repository contains the code for the chalkboard_demo_todos project, which consists of the Todos microservice responsible for managing todo-related operations tied to users.
 
+## Table of Contents
+
+- [Technologies Used](#technologies-used)
+- [Considerations](#considerations)
+  - [Embraced Async Operations](#embraced-async-operations)
+  - [Embraced Repository Pattern](#embraced-repository-pattern)
+- [Directory Structure](#directory-structure)
+  - [Todos Service](#todos-service)
+- [Setup Instructions](#setup-instructions)
+- [cURL Request Examples for Todos](#curl-request-examples-for-todos)
+- [Running Tests for Todos](#running-tests-for-todos)
+
 ## Technologies Used
 
 The following technologies were used in this project:
