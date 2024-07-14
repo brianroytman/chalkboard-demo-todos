@@ -1,2 +1,117 @@
-# chalkboard_demo_todos
-Python FastAPI web application - Todos microservice
+# Chalkboard Demo Todos Microservice
+
+This repository contains the code for the chalkboard_demo_todos project, which consists of the Todo Service responsible for managing todo-related operations.
+
+## Technologies Used
+
+The following technologies were used in this project:
+
+- FastAPI
+- PostgreSQL
+- SQLAlchemy
+- Docker
+- OpenAPI/Swagger
+
+## Directory Structure
+
+The directory structure of this project is as follows:
+
+### Todo Service
+
+- `repositories/todo_repository.py`: Implements database operations using SQLAlchemy for todos.
+- `routers/todo_routes.py`: Defines API routes and endpoints using FastAPI, depending on services for request handling.
+- `services/todo_service.py`: Implements business logic and coordinates with repositories for todos.
+- `create_db.py`: Script for creating the PostgreSQL database required for the todos service.
+- `database.py`: Manages the PostgreSQL database connection.
+- `main.py`: Initializes the FastAPI application for todos.
+- `models.py`: Defines SQLAlchemy models for todos.
+- `schemas.py`: Pydantic schemas for input/output validation related to todos.
+
+## Setup Instructions
+
+To set up and run this project locally without Docker, follow these instructions:
+
+1. Clone the repository:
+    ```sh
+    git clone <repository_url>
+    cd chalkboard_demo_todos
+    ```
+
+2. Install the required dependencies:
+    ```sh
+    pip install -r requirements.txt
+    ```
+
+3. Set up the database:
+    - Ensure PostgreSQL is running locally or configure connection settings in `.env`.
+    - Run the following command to create the database:
+      ```sh
+      python create_db.py
+      ```
+
+4. Start the Todo Service:
+    - Run the following command to start the Todo Service:
+      ```sh
+      uvicorn main:app --reload --port 8002
+      ```
+
+5. Access the Todo Service API documentation:
+    - Open your web browser and go to `http://localhost:8002/docs` to access the Swagger UI documentation for the Todo Service API.
+
+## Docker Instructions
+
+To run the Todos microservice and PostgreSQL database using Docker, follow these steps:
+
+1. Ensure Docker and Docker Compose are installed on your system.
+
+2. Create a `.env` file in the project root with the following content:
+    ```plaintext
+    DATABASE_URL=postgresql+asyncpg://postgres:BroytPGDB123!!@db:5432/ChalkboardDemo
+    ```
+    This assumes the PostgreSQL database is named `ChalkboardDemo` running on host `db`.
+
+3. Create a `docker-compose.yml` file in the project root with the following content:
+    ```yaml
+    version: '3'
+    services:
+      web:
+        build:
+          context: .
+          dockerfile: Dockerfile
+        ports:
+          - 8002:8002
+        volumes:
+          - .:/app
+        env_file:
+          - .env
+        depends_on:
+          - db
+      db:
+        image: postgres:latest
+        environment:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: BroytPGDB123!!
+          POSTGRES_DB: ChalkboardDemo
+        volumes:
+          - postgres_data:/var/lib/postgresql/data
+    
+    volumes:
+      postgres_data:
+    ```
+
+4. Start Docker containers:
+    ```sh
+    docker-compose up
+    ```
+
+5. Access the Todo Service API:
+    - After Docker Compose has started the services, access the Todo Service API at `http://localhost:8002/docs` in your web browser.
+
+## Running Tests
+
+To run the tests for this project, use the following commands:
+
+```sh
+python -m unittest routers/test_routes.py
+python -m unittest services/test_services.py
+python -m unittest repositories/test_repository.py
