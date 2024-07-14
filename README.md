@@ -52,60 +52,12 @@ To set up and run this project locally without Docker, follow these instructions
 4. Start the Todo Service:
     - Run the following command to start the Todo Service:
       ```sh
-      uvicorn main:app --reload --port 8002
+      uvicorn main:app --reload --port 8000
       ```
 
 5. Access the Todo Service API documentation:
-    - Open your web browser and go to `http://localhost:8002/docs` to access the Swagger UI documentation for the Todo Service API.
+    - Open your web browser and go to `http://localhost:8000/docs` to access the Swagger UI documentation for the Todo Service API.
 
-## Docker Instructions
-
-To run the Todos microservice and PostgreSQL database using Docker, follow these steps:
-
-1. Ensure Docker and Docker Compose are installed on your system.
-
-2. Create a `.env` file in the project root with the following content:
-    ```plaintext
-    DATABASE_URL=postgresql+asyncpg://postgres:BroytPGDB123!!@db:5432/ChalkboardDemo
-    ```
-    This assumes the PostgreSQL database is named `ChalkboardDemo` running on host `db`.
-
-3. Create a `docker-compose.yml` file in the project root with the following content:
-    ```yaml
-    version: '3'
-    services:
-      web:
-        build:
-          context: .
-          dockerfile: Dockerfile
-        ports:
-          - 8002:8002
-        volumes:
-          - .:/app
-        env_file:
-          - .env
-        depends_on:
-          - db
-      db:
-        image: postgres:latest
-        environment:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: BroytPGDB123!!
-          POSTGRES_DB: ChalkboardDemo
-        volumes:
-          - postgres_data:/var/lib/postgresql/data
-    
-    volumes:
-      postgres_data:
-    ```
-
-4. Start Docker containers:
-    ```sh
-    docker-compose up
-    ```
-
-5. Access the Todo Service API:
-    - After Docker Compose has started the services, access the Todo Service API at `http://localhost:8002/docs` in your web browser.
 
 ## Running Tests
 
