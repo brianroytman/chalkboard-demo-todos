@@ -169,6 +169,46 @@ class TestTodoService(unittest.IsolatedAsyncioTestCase):
         # Assertions
         self.assertEqual(result, True)
 
+    @patch('services.todos_service.TodoService.find_user_by_id')
+    async def test_get_user_todos(self, mock_find_user_by_id):
+        mock_find_user_by_id.return_value = {
+            'username': 'testuser',
+            'email': 'testuser@example.com',
+            'first_name': 'Test',
+            'last_name': 'User'
+        }
+
+        # Mock TodoRepository's get_user_todos_by_id method with AsyncMock
+        mock_repository = AsyncMock()
+        mock_repository.get_user_todos_by_id.return_value = [
+            Todo(
+                id=1,
+                title='Test Todo 1',
+                description='Test Description 1',
+                is_completed=False,
+                user_id=1
+            ),
+            Todo(
+                id=2,
+                title='Test Todo 2',
+                description='Test Description 2',
+                is_completed=True,
+                user_id=1
+            )
+        ]
+
+        # Create TodoService instance and set the mocked repository
+        todo_service = TodoService()
+        todo_service.todo_repository = mock_repository
+
+        # Call get_user_todos
+        user_id = 1
+        result = await todo_service.get_user_todos(user_id=user_id, session=AsyncSession)
+
+        # Assertions
+        self.assertEqual(len(result), 2)
+        self.assertEqual(result[0].title, 'Test Todo 1')
+        self.assertEqual(result[1].title, 'Test Todo 2')
 
 if __name__ == '__main__':
     unittest.main()

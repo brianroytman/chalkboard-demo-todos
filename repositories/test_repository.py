@@ -29,8 +29,8 @@ class TestTodoRepository(unittest.IsolatedAsyncioTestCase):
         # Instantiate TodoRepository
         todo_repo = TodoRepository()
 
-        # Call create method
-        result = await todo_repo.create(mock_session, mock_todo)
+        # Call add method
+        result = await todo_repo.add(mock_session, mock_todo)
 
         # Assertions
         self.assertEqual(result.title, 'Test Todo')
