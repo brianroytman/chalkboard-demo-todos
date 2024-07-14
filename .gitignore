@@ -5,8 +5,6 @@
 .ipynb_checkpoints
 
 # Ignore environment and package files
-.env
-*.env
 *.venv
 *.egg-info/
 .Python
