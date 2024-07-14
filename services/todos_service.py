@@ -29,7 +29,7 @@ class TodoService:
             description=todo_data.description,
             user_id=todo_data.user_id
         )
-        return await self.todo_repository.create(session, new_todo)
+        return await self.todo_repository.add(session, new_todo)
 
     async def get_todo(self, todo_id: int, session: AsyncSession) -> Todo:
         return await self.todo_repository.get_by_id(session, todo_id)

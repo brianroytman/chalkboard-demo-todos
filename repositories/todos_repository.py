@@ -7,7 +7,7 @@ from fastapi import HTTPException, status
 
 
 class TodoRepository:
-    async def create(self, session: AsyncSession, todo: Todo) -> Todo:
+    async def add(self, session: AsyncSession, todo: Todo) -> Todo:
         session.add(todo)
         await session.commit()
         return todo
