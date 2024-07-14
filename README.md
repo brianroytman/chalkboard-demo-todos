@@ -58,8 +58,57 @@ To set up and run this project locally without Docker, follow these instructions
 5. Access the Todo Service API documentation:
     - Open your web browser and go to `http://localhost:8000/docs` to access the Swagger UI documentation for the Todo Service API.
 
+## cURL Request Examples for Todos
+- GET /todos/
+```sh
+curl -X 'GET' \
+    'http://127.0.0.1:8000/todos' \
+    -H 'accept: application/json'
+```
 
-## Running Tests
+- POST /todos/
+```sh
+curl -X 'POST' \
+    'http://127.0.0.1:8000/todos' \
+    -H 'accept: application/json' \
+    -H 'Content-Type: application/json' \
+    -d '{
+    "title": "Buy groceries",
+    "description": "Go to the supermarket and buy groceries",
+    "is_completed": false,
+    "user_id": 1
+}'
+```
+
+- GET /todos/{todo_id}
+```sh
+curl -X 'GET' \
+    'http://127.0.0.1:8000/todos/1' \
+    -H 'accept: application/json'
+```
+
+- PUT /todos/{todo_id}/
+```sh
+curl -X 'PUT' \
+    'http://127.0.0.1:8000/todos/1' \
+    -H 'accept: application/json' \
+    -H 'Content-Type: application/json' \
+    -d '{
+    "title": "UPDATE Buy groceries",
+    "description": "Go to the supermarket and buy groceries",
+    "is_completed": true,
+    "user_id": 1
+}'
+```
+
+- DELETE /todos/{todo_id}/
+```sh
+curl -X 'DELETE' \
+    'http://127.0.0.1:8000/todos/6' \
+    -H 'accept: */*'
+```
+
+## Running Tests for Todos
 
 To run the tests for this project, use the following commands:
 
