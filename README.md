@@ -43,14 +43,14 @@ To set up and run this project locally without Docker, follow these instructions
     ```
 
 3. Set up the database:
-- Ensure PostgreSQL is running locally or configure connection settings in `.env`.
-- Run the following command to create the database:
+    - Ensure PostgreSQL is running locally or configure connection settings in `.env`.
+    - Run the following command to create the database:
     ```sh
     py create_db.py
     ```
 
 4. Start the Todo Service:
-- Run the following command to start the Todo Service:
+    - Run the following command to start the Todo Service:
     ```sh
     uvicorn main:app --reload --port 8000
     ```
