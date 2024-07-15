@@ -26,12 +26,12 @@ The following technologies were used in this project:
 
 ## Considerations
 
-### Embraced Async Operations
+### Async Operations
 - **Improved Performance:** Non-blocking operations allow handling more concurrent requests efficiently.
 - **Scalability:** Utilizes server resources better by overlapping tasks and improving CPU and I/O utilization.
 - **Responsive Applications:** Ensures applications remain responsive to requests, providing faster responses to clients.
 
-### Embraced Repository Pattern
+### Repository Pattern
 
 1. **Repository Pattern Overview**
    - Abstracts data access logic, separating it from the application's business logic.
@@ -45,6 +45,20 @@ The following technologies were used in this project:
    - **Router (Controller) Layer:** Handles HTTP requests, validates inputs, delegates processing to the service layer.
    - **Service (Business Logic) Layer:** Implements application-specific rules, coordinates with repositories for data operations.
    - **Repository (Data Access) Layer:** Manages database interactions, offers a unified interface for data access operations.
+
+- Repository Pattern: Create User Example
+```mermaid
+sequenceDiagram
+participant ts as todos service
+participant us as users service
+participant ud as users table
+participant td as todos table
+ts ->> us: Check User Exists
+us ->> ud: Get User by UserId
+ud ->> us: True
+us ->> ts: True
+ts ->> td: Write new Todo record to DB
+```
 
 4. **Advantages**
    - **Testability:** Enables independent testing of business logic using mock repositories.
@@ -68,6 +82,8 @@ The directory structure of this project is as follows:
 - `schemas.py`: Pydantic schemas for input/output validation related to todos.
 
 ## Setup Instructions
+
+### Run Local
 
 To set up and run this project locally without Docker, follow these instructions:
 
@@ -96,7 +112,34 @@ To set up and run this project locally without Docker, follow these instructions
     ```
 
 5. Access the Todo Service API documentation:
-    - Open your web browser and go to `http://localhost:8000/docs` to access the Swagger UI documentation for the Todo Service API.
+    - Open your web browser and go to `http://localhost:8000` to access the Swagger UI documentation and endpoints for the Todo Service API.
+
+### Run via Docker
+
+To set up and run this project with Docker, follow these instructions:
+
+1. Clone the repository and navigate to the root directory of the project:
+```sh
+git clone https://github.com/brianroytman/chalkboard-demo-todos.git
+cd chalkboard-demo-todos
+```
+
+2. Make sure Docker is installed on your machine:
+
+3. Run Docker Compose:
+```sh
+docker-compose build
+docker-compose up
+```
+
+4. Access the Todos service and Users in your web browser:
+    - Users service must be up and running for Todos.Create and Todos.Update endpoints to function
+```sh
+http://localhost:8000
+http://localhost:8001
+```
+
+5. Interact with Users service endpoints via web browser
 
 ## cURL Request Examples for Todos
 - GET /todos/
