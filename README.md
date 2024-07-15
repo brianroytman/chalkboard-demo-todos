@@ -65,7 +65,8 @@ us ->> ud: Get User by UserId
 ud ->> us: User Found
 us ->> ts: True
 ts ->> trp: repositories.add
-ts ->> td: Write new Todo record to DB
+trp ->> td: Write new Todo record to DB
+
 ```
 
 4. **Advantages**
