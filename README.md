@@ -48,17 +48,23 @@ The following technologies were used in this project:
    - **Service (Business Logic) Layer:** Implements application-specific rules, coordinates with repositories for data operations.
    - **Repository (Data Access) Layer:** Manages database interactions, offers a unified interface for data access operations.
 
-    - Repository Pattern: Create User Example
+        - Repository Pattern: Create Todo Example
 ```mermaid
 sequenceDiagram
+participant ui as ui
+participant tr as todos route
 participant ts as todos service
+participant trp as todos repository
 participant us as users service
 participant ud as users table
 participant td as todos table
-ts ->> us: Check User Exists
+ui ->> tr: POST /todos routes.create_todo
+tr ->> ts: services.create_todo
+ts ->> us: HTTP service call: Check User Exists
 us ->> ud: Get User by UserId
-ud ->> us: True
+ud ->> us: User Found
 us ->> ts: True
+ts ->> trp: repositories.add
 ts ->> td: Write new Todo record to DB
 ```
 
