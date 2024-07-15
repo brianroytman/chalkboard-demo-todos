@@ -31,6 +31,25 @@ class TestTodoService(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(result['email'], 'testuser@example.com')
         self.assertEqual(result['first_name'], 'Test')
         self.assertEqual(result['last_name'], 'User')
+    
+    @patch('services.todos_service.TodoService.find_user_by_id')
+    async def test_check_user_exists(self, mock_find_user_by_id):
+        mock_find_user_by_id.return_value = {
+            'username': 'testuser',
+            'email': 'testuser@example.com',
+            'first_name': 'Test',
+            'last_name': 'User'
+        }
+
+        # Create TodoService instance
+        todo_service = TodoService()
+
+        # Call check_user_exists
+        user_id = 1
+        result = await todo_service.check_user_exists(user_id)
+
+        # Assertions
+        self.assertTrue(result)
 
     @patch('services.todos_service.TodoService.find_user_by_id')
     async def test_create_todo(self, mock_find_user_by_id):

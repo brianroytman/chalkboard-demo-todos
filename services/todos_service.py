@@ -11,13 +11,25 @@ class TodoService:
     def __init__(self):
         self.todo_repository = TodoRepository()
 
-    async def find_user_by_id(user_id: int):
+    async def find_user_by_id(self, user_id: int):
         base_url = os.getenv('USERS_SERVICE_URL', 'http://localhost:8001')
         url = f"{base_url}/users/{user_id}"
         async with httpx.AsyncClient() as client:
-            response = await client.get(url.format(user_id=user_id))
-            response.raise_for_status()  # Raise exception for non-2xx responses
-            return response.json()
+            try:
+                response = await client.get(url)
+                response.raise_for_status()  # Raise exception for non-2xx responses
+                return response.json() if response.status_code == 200 else None
+            except httpx.HTTPStatusError as e:
+                if e.response.status_code == 404:
+                    return None  # User not found
+                else:
+                    raise  # Raise other HTTP status errors
+            except httpx.RequestError:
+                raise  # Handle network or request errors
+        
+    async def check_user_exists(self, user_id: int):
+        user_data = await self.find_user_by_id(user_id)
+        return user_data is not None
 
     async def create_todo(self, todo_data: TodoCreateModel, session: AsyncSession) -> Todo:
         # Validate user_id exists
