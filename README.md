@@ -6,11 +6,13 @@ This repository contains the code for the chalkboard_demo_todos project, which c
 
 - [Technologies Used](#technologies-used)
 - [Considerations](#considerations)
-  - [Embraced Async Operations](#embraced-async-operations)
-  - [Embraced Repository Pattern](#embraced-repository-pattern)
+  - [Async Operations](#async-operations)
+  - [Repository Pattern](#repository-pattern)
 - [Directory Structure](#directory-structure)
   - [Todos Service](#todos-service)
 - [Setup Instructions](#setup-instructions)
+    -[Run Local](#run-local)
+    -[Run via Docker](#run-via-docker)
 - [cURL Request Examples for Todos](#curl-request-examples-for-todos)
 - [Running Tests for Todos](#running-tests-for-todos)
 
@@ -46,7 +48,7 @@ The following technologies were used in this project:
    - **Service (Business Logic) Layer:** Implements application-specific rules, coordinates with repositories for data operations.
    - **Repository (Data Access) Layer:** Manages database interactions, offers a unified interface for data access operations.
 
-- Repository Pattern: Create User Example
+    - Repository Pattern: Create User Example
 ```mermaid
 sequenceDiagram
 participant ts as todos service
@@ -85,38 +87,47 @@ The directory structure of this project is as follows:
 
 ### Run Local
 
-To set up and run this project locally without Docker, follow these instructions:
+To set up and run this project locally, follow these instructions:
+    - Note: In order to create and update Todos with an associated UserId, the Users service must also be running
 
-1. Clone the repository:
+1. Clone each repository and run in dedicated terminals:
     ```sh
-    git clone <repository_url>
+    git clone https://github.com/brianroytman/chalkboard-demo-todos.git
     cd chalkboard_demo_todos
     ```
+    ```sh
+    git clone https://github.com/brianroytman/chalkboard-demo-users.git
+    cd chalkboard_demo_users
+    ```
 
-2. Install the required dependencies:
+2. Install the required dependencies for each service/ in each terminal session:
     ```sh
     pip install -r requirements.txt
     ```
 
 3. Set up the database:
     - Ensure PostgreSQL is running locally or configure connection settings in `.env`.
-    - Run the following command to create the database:
+    - Run the following command to create the database for each each service/in each terminal session:
     ```sh
     py create_db.py
     ```
 
-4. Start the Todo Service:
-    - Run the following command to start the Todo Service:
+4. Start the Todos Service:
+    - Run the following commands to start the Todos service and the Users service:
     ```sh
     uvicorn main:app --reload --port 8000
     ```
+    ```sh
+    uvicorn main:app --reload --port 8001
+    ```
 
 5. Access the Todo Service API documentation:
-    - Open your web browser and go to `http://localhost:8000` to access the Swagger UI documentation and endpoints for the Todo Service API.
+    - Open your web browser and go to `http://localhost:8000` to access the Swagger UI documentation and endpoints for the Todos service API.
 
 ### Run via Docker
 
 To set up and run this project with Docker, follow these instructions:
+- Note: The docker-compose.yml file has configuration details for starting up and connecting to the Users service as well as the Todos service
 
 1. Clone the repository and navigate to the root directory of the project:
 ```sh
