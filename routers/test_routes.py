@@ -155,7 +155,7 @@ class TestTodoRoutes(unittest.TestCase):
         )
     ])
     def test_get_user_todos(self, mock_get_user_todos):
-        response = self.client.get("/users/1/todos")
+        response = self.client.get("/todos/user/1")
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.json()), 1)
@@ -163,15 +163,15 @@ class TestTodoRoutes(unittest.TestCase):
 
     @patch.object(TodoService, 'get_user_todos', return_value=[])
     def test_get_user_todos_empty(self, mock_get_user_todos):
-        response = self.client.get("/users/1/todos")
+        response = self.client.get("/todos/user/1")
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.json()), 0)
         mock_get_user_todos.assert_called_once_with(1, unittest.mock.ANY)
-    
+
     @patch.object(TodoService, 'get_user_todos', side_effect=Exception("User not found"))
     def test_get_user_todos_user_not_found(self, mock_get_user_todos):
-        response = self.client.get("/users/999/todos")
+        response = self.client.get("/todos/user/999")
 
         self.assertEqual(response.status_code, status.HTTP_500_INTERNAL_SERVER_ERROR)
         self.assertIn("User not found", response.json()["detail"])
