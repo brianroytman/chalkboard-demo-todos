@@ -33,7 +33,7 @@ class TodoService:
 
     async def create_todo(self, todo_data: TodoCreateModel, session: AsyncSession) -> Todo:
         # Validate user_id exists
-        user = await TodoService.find_user_by_id(todo_data.user_id)
+        user = await self.find_user_by_id(todo_data.user_id)
         if not user:
             raise UserNotFoundException(todo_data.user_id)
 
@@ -53,7 +53,7 @@ class TodoService:
 
     async def update_todo(self, todo_id: int, todo_data: TodoUpdateModel, session: AsyncSession) -> Todo:
         # Validate user_id exists
-        user = await TodoService.find_user_by_id(todo_data.user_id)
+        user = await self.find_user_by_id(todo_data.user_id)
         if not user:
             raise UserNotFoundException(todo_data.user_id)
 

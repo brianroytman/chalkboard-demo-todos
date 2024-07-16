@@ -3,7 +3,7 @@ from fastapi import APIRouter, HTTPException, status, Depends
 from fastapi.responses import Response
 from sqlalchemy.ext.asyncio import AsyncSession
 from dependencies import get_session
-from schemas import TodoModel, TodoCreateModel
+from schemas import TodoModel, TodoCreateModel, TodoUpdateModel
 from commands import CreateTodoCommand
 from queries import GetTodosByUserQuery
 from services.todos_service import TodoService
@@ -73,7 +73,7 @@ async def get_todos(session: AsyncSession = Depends(get_session)):
 
 
 @router.put("/todos/{todo_id}", status_code=status.HTTP_200_OK, response_model=TodoModel)
-async def update_todo(todo_id: int, todo_data: TodoCreateModel, session: AsyncSession = Depends(get_session)):
+async def update_todo(todo_id: int, todo_data: TodoUpdateModel, session: AsyncSession = Depends(get_session)):
     try:
         todo = await todos_service.update_todo(todo_id, todo_data, session)
         if not todo:
