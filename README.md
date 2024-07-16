@@ -12,8 +12,8 @@ This repository contains the code for the chalkboard_demo_todos project, which c
 - [Directory Structure](#directory-structure)
   - [Todos Service](#todos-service)
 - [Setup Instructions](#setup-instructions)
-    -[Run Local](#run-local)
-    -[Run via Docker](#run-via-docker)
+  -[Run Local](#run-local)
+  -[Run via Docker](#run-via-docker)
 - [cURL Request Examples for Todos](#curl-request-examples-for-todos)
 - [Running Tests for Todos](#running-tests-for-todos)
 
