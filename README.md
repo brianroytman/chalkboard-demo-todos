@@ -7,6 +7,7 @@ This repository contains the code for the chalkboard_demo_todos project, which c
 - [Technologies Used](#technologies-used)
 - [Considerations](#considerations)
   - [Async Operations](#async-operations)
+  - [CQRS Pattern](#cqrs-pattern)
   - [Repository Pattern](#repository-pattern)
 - [Directory Structure](#directory-structure)
   - [Todos Service](#todos-service)
@@ -48,6 +49,7 @@ The following technologies were used in this project:
    - **Query Handler (Read)**: Handles queries for retrieving data, optimizes data access patterns, and prepares data for presentation.
 
         - CQRS Pattern Example: Create Todo and Get All Todos by User
+```mermaid
    sequenceDiagram
     participant ui as UI
     participant cr as Command Route
@@ -74,7 +76,7 @@ The following technologies were used in this project:
     td -->> qh: Return Todos records
     qh -->> qr: Return Todos to route
     qr -->> ui: Return Todos response
-
+```
 
 
 ### Repository Pattern
@@ -93,6 +95,7 @@ The following technologies were used in this project:
    - **Repository (Data Access) Layer:** Manages database interactions, offers a unified interface for data access operations.
 
         - Repository Pattern: Create Todo Example
+```mermaid
 sequenceDiagram
     participant ui as UI
     participant tr as Todos Route
@@ -114,7 +117,7 @@ sequenceDiagram
     trp -->> ts: Return operation success
     ts -->> tr: Return operation success
     tr -->> ui: Return operation success
-
+```
 
 
 4. **Advantages**
@@ -132,8 +135,8 @@ The directory structure of this project is as follows:
 - `repositories/todo_repository.py`: Implements database operations using SQLAlchemy for todos.
 - `routers/todo_routes.py`: Defines API routes and endpoints using FastAPI, depending on services for request handling.
 - `services/todo_service.py`: Implements business logic and coordinates with repositories for todos.
-- `commands.py`: Contains SQLAlchemy models for commands related to todos, such as creating new todos.
-- `queries.py`: Contains SQLAlchemy models for queries related to todos, like retrieving todos by user ID.
+- `commands.py`: Contains SQLAlchemy model for commands related to todos - creating new todos.
+- `queries.py`: Contains SQLAlchemy model for queries related to todos - retrieving todos by user ID.
 - `handlers/command_handler.py`: Handles command execution and business logic for todos, coordinating with services and repositories.
 - `handlers/query_handler.py`: Manages query handling and data retrieval for todos, interfacing with the database and services.
 - `create_db.py`: Script for creating the PostgreSQL database required for the todos service.
