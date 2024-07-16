@@ -201,8 +201,10 @@ To set up and run this project locally, follow these instructions:
 To set up and run this project with Docker, follow these instructions:
 - Note: The docker-compose.yml file has configuration details for starting up and connecting to the Users service as well as the Todos service
 
-1. Clone the repository and navigate to the root directory of the project:
+1. Clone both repositories and navigate to the root directory of the Todos service:
+    - Todos Docker setup is dependent on Users service, so both are needed to exist in the same directory
 ```sh
+git clone https://github.com/brianroytman/chalkboard-demo-users.git
 git clone https://github.com/brianroytman/chalkboard-demo-todos.git
 cd chalkboard-demo-todos
 ```
@@ -218,11 +220,11 @@ docker-compose up
 4. Access the Todos service and Users in your web browser:
     - Users service must be up and running for Todos.Create and Todos.Update endpoints to function
 ```sh
-http://localhost:8000
-http://localhost:8001
+http://localhost:8000 (Todos)
+http://localhost:8001 (Users)
 ```
 
-5. Interact with Users service endpoints via web browser
+5. Interact with Todos service endpoints via web browser
 
 ## cURL Request Examples for Todos
 - GET /todos/
