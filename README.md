@@ -15,6 +15,7 @@ This repository contains the code for the chalkboard_demo_todos project, which c
   -[Run Local](#run-local)
   -[Run via Docker](#run-via-docker)
 - [cURL Request Examples for Todos](#curl-request-examples-for-todos)
+- [Live Demo](#live-demo)
 - [Running Tests for Todos](#running-tests-for-todos)
 
 ## Technologies Used
@@ -282,6 +283,9 @@ curl -X 'GET' \
     'http://127.0.0.1:8000/todos/user/1' \
     -H 'accept: application/json'
 ```
+
+## Live Demo
+[Live Demo](https://www.loom.com/share/e5726e64133b42a5b1cafd9a031d7c61?sid=5776570b-9b91-496b-aaf4-9ee28a2fcc93)
 
 ## Running Tests for Todos
 
