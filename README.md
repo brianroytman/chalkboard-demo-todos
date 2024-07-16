@@ -33,6 +33,50 @@ The following technologies were used in this project:
 - **Scalability:** Utilizes server resources better by overlapping tasks and improving CPU and I/O utilization.
 - **Responsive Applications:** Ensures applications remain responsive to requests, providing faster responses to clients.
 
+### CQRS Pattern
+
+1. **CQRS Pattern Overview**
+   - Separates the responsibility for handling read and write operations into different components.
+   - Optimizes query performance and scalability by tailoring data models and access patterns for read and write operations separately.
+
+2. **Key Components**
+   - **Command Side:** Handles write operations (e.g., create, update, delete), enforcing business rules and updating the data store.
+   - **Query Side:** Handles read operations, optimized for querying and presenting data without affecting write operations.
+
+3. **Implementation Alignment**
+   - **Command Handler (Write)**: Receives commands from the client, validates inputs, processes business logic, and updates the data store.
+   - **Query Handler (Read)**: Handles queries for retrieving data, optimizes data access patterns, and prepares data for presentation.
+
+        - CQRS Pattern Example: Create Todo and Get All Todos by User
+   sequenceDiagram
+    participant ui as UI
+    participant cr as Command Route
+    participant ch as Command Handler
+    participant us as Users Service
+    participant qr as Query Route
+    participant qh as Query Handler
+    participant td as Todos Table
+
+    ui ->> cr: POST /todos routes.create_todo
+    cr ->> ch: commands.create_todo
+    ch ->> us: Check if user exists
+    us -->> ch: True
+    ch ->> td: Insert new Todo record into DB
+    td -->> ch: Return operation success
+    ch -->> cr: Return response to route
+    cr -->> ui: Return response to UI
+
+    ui ->> qr: GET /todos/user/{user_id} routes.get_todos
+    qr ->> qh: queries.get_todos
+    qh ->> us: Check if user exists
+    us -->> qh: True
+    qh ->> td: Select all Todos records from DB
+    td -->> qh: Return Todos records
+    qh -->> qr: Return Todos to route
+    qr -->> ui: Return Todos response
+
+
+
 ### Repository Pattern
 
 1. **Repository Pattern Overview**
@@ -49,25 +93,29 @@ The following technologies were used in this project:
    - **Repository (Data Access) Layer:** Manages database interactions, offers a unified interface for data access operations.
 
         - Repository Pattern: Create Todo Example
-```mermaid
 sequenceDiagram
-participant ui as ui
-participant tr as todos route
-participant ts as todos service
-participant trp as todos repository
-participant us as users service
-participant ud as users table
-participant td as todos table
-ui ->> tr: POST /todos routes.create_todo
-tr ->> ts: services.create_todo
-ts ->> us: HTTP service call: Check User Exists
-us ->> ud: Get User by UserId
-ud ->> us: User Found
-us ->> ts: True
-ts ->> trp: repositories.add
-trp ->> td: Write new Todo record to DB
+    participant ui as UI
+    participant tr as Todos Route
+    participant ts as Todos Service
+    participant trp as Todos Repository
+    participant us as Users Service
+    participant ud as Users Table
+    participant td as Todos Table
 
-```
+    ui ->> tr: POST /todos routes.create_todo
+    tr ->> ts: services.create_todo
+    ts ->> us: HTTP service call: Check User Exists
+    us ->> ud: Get User by UserId
+    ud ->> us: User Found
+    us ->> ts: True
+    ts ->> trp: repositories.add
+    trp ->> td: Write new Todo record to DB
+    td -->> trp: Operation success response
+    trp -->> ts: Return operation success
+    ts -->> tr: Return operation success
+    tr -->> ui: Return operation success
+
+
 
 4. **Advantages**
    - **Testability:** Enables independent testing of business logic using mock repositories.
@@ -84,11 +132,25 @@ The directory structure of this project is as follows:
 - `repositories/todo_repository.py`: Implements database operations using SQLAlchemy for todos.
 - `routers/todo_routes.py`: Defines API routes and endpoints using FastAPI, depending on services for request handling.
 - `services/todo_service.py`: Implements business logic and coordinates with repositories for todos.
+- `commands.py`: Contains SQLAlchemy models for commands related to todos, such as creating new todos.
+- `queries.py`: Contains SQLAlchemy models for queries related to todos, like retrieving todos by user ID.
+- `handlers/command_handler.py`: Handles command execution and business logic for todos, coordinating with services and repositories.
+- `handlers/query_handler.py`: Manages query handling and data retrieval for todos, interfacing with the database and services.
 - `create_db.py`: Script for creating the PostgreSQL database required for the todos service.
 - `database.py`: Manages the PostgreSQL database connection.
 - `main.py`: Initializes the FastAPI application for todos.
 - `models.py`: Defines SQLAlchemy models for todos.
 - `schemas.py`: Pydantic schemas for input/output validation related to todos.
+
+
+## API Endpoints
+
+- Create a User: POST /todos/
+- Read Todos: GET /todos/
+- Read a Todo by ID: GET /todos/{todo_id}/
+- Update a Todo: PUT /todos/{todo_id}/
+- Delete a Todo: DELETE /todos/{todo_id}/
+- Read Todos by User: GET /todos/user/{user_id}
 
 ## Setup Instructions
 
@@ -207,6 +269,13 @@ curl -X 'PUT' \
 curl -X 'DELETE' \
     'http://127.0.0.1:8000/todos/6' \
     -H 'accept: */*'
+```
+
+- GET /todos/user/{user_id}
+```sh
+curl -X 'GET' \
+    'http://127.0.0.1:8000/todos/user/1' \
+    -H 'accept: application/json'
 ```
 
 ## Running Tests for Todos
