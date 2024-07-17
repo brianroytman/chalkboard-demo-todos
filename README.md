@@ -149,7 +149,7 @@ The directory structure of this project is as follows:
 
 ## API Endpoints
 
-- Create a User: POST /todos/
+- Create a Todo: POST /todos/
 - Read Todos: GET /todos/
 - Read a Todo by ID: GET /todos/{todo_id}/
 - Update a Todo: PUT /todos/{todo_id}/
