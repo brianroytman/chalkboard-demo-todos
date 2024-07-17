@@ -9,11 +9,11 @@ This repository contains the code for the chalkboard_demo_todos project, which c
   - [Async Operations](#async-operations)
   - [CQRS Pattern](#cqrs-pattern)
   - [Repository Pattern](#repository-pattern)
-- [Directory Structure](#directory-structure)
+- [Project Structure](#project-structure)
   - [Todos Service](#todos-service)
 - [Setup Instructions](#setup-instructions)
-  -[Run Local](#run-local)
-  -[Run via Docker](#run-via-docker)
+  - [Run Local](#run-local)
+  - [Run via Docker](#run-via-docker)
 - [cURL Request Examples for Todos](#curl-request-examples-for-todos)
 - [Live Demo](#live-demo)
 - [Running Tests for Todos](#running-tests-for-todos)
@@ -49,7 +49,7 @@ The following technologies were used in this project:
    - **Command Handler (Write)**: Receives commands from the client, validates inputs, processes business logic, and updates the data store.
    - **Query Handler (Read)**: Handles queries for retrieving data, optimizes data access patterns, and prepares data for presentation.
 
-        - CQRS Pattern Example: Create Todo and Get All Todos by User
+###### CQRS Pattern Examples: Create Todo and Get All Todos by User
 ```mermaid
    sequenceDiagram
     participant ui as UI
@@ -95,7 +95,7 @@ The following technologies were used in this project:
    - **Service (Business Logic) Layer:** Implements application-specific rules, coordinates with repositories for data operations.
    - **Repository (Data Access) Layer:** Manages database interactions, offers a unified interface for data access operations.
 
-        - Repository Pattern: Create Todo Example
+###### Repository Pattern: Create Todo Example
 ```mermaid
 sequenceDiagram
     participant ui as UI
@@ -127,11 +127,40 @@ sequenceDiagram
    - **Centralized Data Access:** Promotes code reuse, ensures consistent data access patterns across the application.
 
 
-## Directory Structure
+## Project Structure
 
 The directory structure of this project is as follows:
 
 ### Todos Service
+
+```
+chalkboard_demo_todos/
+├── Dockerfile
+├── requirements.txt
+├── docker-compose.yml
+├── main.py
+├── create_db.py
+├── database.py
+├── dependencies.py
+├── models.py
+├── schemas.py
+├── services/
+│ ├── todo_service.py
+│ └── test_services.py
+├── repositories/
+│ ├── todo_repository.py
+│ └── test_repository.py
+├── routers/
+│ ├── todo_routes.py
+│ └── test_routes.py
+├── handlers/
+│ ├── command_handler.py
+│ └── query_handler.py
+├── commands.py
+├── queries.py
+├── exceptions/
+│ └── user_not_found_exception.py
+```
 
 - `repositories/todo_repository.py`: Implements database operations using SQLAlchemy for todos.
 - `routers/todo_routes.py`: Defines API routes and endpoints using FastAPI, depending on services for request handling.
@@ -149,12 +178,14 @@ The directory structure of this project is as follows:
 
 ## API Endpoints
 
-- Create a Todo: POST /todos/
-- Read Todos: GET /todos/
-- Read a Todo by ID: GET /todos/{todo_id}/
-- Update a Todo: PUT /todos/{todo_id}/
-- Delete a Todo: DELETE /todos/{todo_id}/
-- Read Todos by User: GET /todos/user/{user_id}
+| Action            | HTTP Method | Endpoint                          |
+|-------------------|-------------|-----------------------------------|
+| Create a Todo     | POST        | /todos                           |
+| Read Todos        | GET         | /todos                           |
+| Read a Todo by ID | GET         | /todos/{todo_id}                 |
+| Update a Todo     | PUT         | /todos/{todo_id}                 |
+| Delete a Todo     | DELETE      | /todos/{todo_id}                 |
+| Read All Todos by UserID| GET         | /todos/user/{user_id}             |
 
 ## Setup Instructions
 
