@@ -1,6 +1,7 @@
 # Chalkboard Demo Todos Microservice
 
-This repository contains the code for the chalkboard_demo_todos project, which consists of the Todos microservice responsible for managing todo-related operations tied to users.
+This repository contains the code for the chalkboard_demo_todos project, which consists of the Todos microservice responsible for managing todo-related operations tied to users via an interconnected Users microservice.
+[Users microservice](https://github.com/brianroytman/chalkboard-demo-users)
 
 ## Table of Contents
 
